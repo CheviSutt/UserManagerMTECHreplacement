@@ -1,0 +1,16 @@
+body{
+    display: flex;
+    justify-content: center;
+    background-color: lightgrey;
+    color: dodgerblue;
+}
+
+.container{
+    display: flex;
+    border: 1px solid black;
+    justify-content: center;
+    padding-top: 5%;
+    padding-bottom: 10%;
+    background-color: whitesmoke;
+    width: 600px;
+}

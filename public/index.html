@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"
+            integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="action.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <form action="/clientTable" method="post">
+
+        <label for="userId">User Id:</label>
+        <input type="text" name="userId" id="userId"><br>
+
+        <label for="firstName">First Name</label>
+        <input type="text" name="firstName" id="firstName" value="John/Jane"><br>
+
+        <label for="lastName">Last Name</label>
+        <input type="text" name="lastName" id="lastName" value="Doe"><br>
+
+       <label for="email">Email</label>
+        <input type="email" name="email" id="email" value="abc@123.com"><br>
+
+        <label for="address">Address</label>
+        <input type="text" name="address" id="address" value="111 W 333 S City,ST 65493"><br>
+
+        <label for="age">Age:</label>
+        <input type="number" name="age" min="0" id="age" value="Age"><br><br>
+
+        <input type="submit" name="Submit">
+
+    </form>
+</div>
+
+</body>
+</html>

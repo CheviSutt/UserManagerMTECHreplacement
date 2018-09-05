@@ -1,0 +1,18 @@
+html
+    body
+        table
+            tr
+                th User ID
+                th First Name
+                th Last Name
+                th Email
+                th Address
+                th Age
+            each client in clients
+                tr
+                    td #{client.userId}
+                    td #{client.firstName}
+                    td #{client.lastName}
+                    td #{client.email}
+                    td #{client.address}
+                    td #{client.age}
