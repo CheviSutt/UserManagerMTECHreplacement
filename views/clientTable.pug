@@ -1,3 +1,5 @@
+mixin link(href, name)
+    a(href=href)&attributes(attributes)= name
 html
     body
         table
@@ -16,3 +18,9 @@ html
                     td #{client.email}
                     td #{client.address}
                     td #{client.age}
+                        |
+                        |
+                        +link('/foo', 'foo')(class="btn")
+                        |
+                        |
+                        +link('/bar', 'bar')(class="btn")

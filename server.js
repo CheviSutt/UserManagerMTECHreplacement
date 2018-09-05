@@ -26,6 +26,7 @@ app.post('/clientTable', (req, res) => {
 
     let jsonData = JSON.parse(data);
     let clientObj = {
+        // userid: 0, // unique id
         userid: req.body.userid,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -34,11 +35,11 @@ app.post('/clientTable', (req, res) => {
         age: req.body.age
     };
 
-        // prevData.clients.forEach(client => { // unique id block
-        //     if (client.id === index) index++;
-        //     jsonArray.clients.push(client);
+        // prevData.clients.forEach(userid => { // unique id block
+        //     if (userid.id === index) index++;
+        //     jsonArray.clients.push(userid);
         // });
-
+        //
         // clientObj.id = index; // unique id block
         // jsonArray.clients.push(clientObj); // unique id
 
@@ -46,6 +47,7 @@ app.post('/clientTable', (req, res) => {
         res.render('clientTable', {clients: jsonData.clients});
 
         fs.writeFile(jsonFile, JSON.stringify(jsonData), 'utf8', err => console.log(err));
+        //res.sendFile(jsonFile); // unique id attept
     });
     // res.sendFile(jsonFile); // unique id attept
 });
