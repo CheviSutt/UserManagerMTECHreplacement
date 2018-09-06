@@ -12,7 +12,7 @@ html
                 th Age
             each client in clients
                 tr
-                    td #{client.userid}
+                    td #{client.userId}
                     td #{client.firstName}
                     td #{client.lastName}
                     td #{client.email}
@@ -23,4 +23,5 @@ html
                         +link('/edit', 'Edit')(class="btn")
                         |
                         |
+                        //a(onClick='play()') Delete
                         +link('/delete', 'Delete')(class="btn")

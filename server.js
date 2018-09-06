@@ -6,9 +6,9 @@ const jsonFile = __dirname + '/clients.json';
 
 const app = express();
 
-let jsonArray = {
-    clients: []
-};
+// let jsonArray = {
+//     clients: []
+// };
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -27,13 +27,13 @@ app.post('/clientTable', (req, res) => {
     let jsonData = JSON.parse(data);
     let clientObj = {
         // userid: 0, // unique id
-        userid: req.body.userid,
+        userId: req.body.userId,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         address: req.body.address,
         age: req.body.age
-    };
+    }
 
         // prevData.clients.forEach(userid => { // unique id block
         //     if (userid.id === index) index++;
@@ -52,6 +52,23 @@ app.post('/clientTable', (req, res) => {
     // res.sendFile(jsonFile); // unique id attept
 });
 
+app.get('/edit', (req, res) => { // Routes to edit page
+    fs.readFile(jsonFile, 'utf8', (err, data) => {
+        if (err) console.log(err);
+
+        let jsonData = JSON.parse(data);
+
+        res.render('edit', {clients: jsonData.clients});
+        // fs.writeFile(jsonFile, JSON.stringify(jsonData), 'utf8', err => console.log(err));
+    });
+});
+
+
 app.listen(8080, () => {
     console.log('Listening on port 8080');
 });
+
+// function play() {
+//     return 123;
+// }
+// console.log(play);
