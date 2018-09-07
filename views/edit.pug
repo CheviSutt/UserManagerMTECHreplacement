@@ -1,8 +1,30 @@
-h1 Edit Page
-//html
-//    body
-//        div
-//            form(action="/clientTable")
-//                each client in clients
-//                    p
-//                    input #{client.firstName}
+html
+    body
+        form(action="/editSubmit" method="post")
+            table
+                tr
+                th User ID
+                th First Name
+                th Last Name
+                th Email
+                th Age
+                each client, index in clients
+                    tr
+                        td
+                            input(placeholder="UserID" type="text" name="userId" value=client.userId)
+                        td
+                            input(placeholder="First Name" type="text" name="firstName" value=client.firstName)
+                        td
+                            input(placeholder="UserID" type="text" name="lastName" value=client.lastName)
+                        td
+                            input(placeholder="Email" type="text" name="email" value=client.email)
+                        td
+                            input(placeholder="Age" type="text" name="age" value=client.age)
+                        td
+                            form(action='/delete' method='post')
+                                div
+                                    input(type='submit', name='delete', value=index)
+
+            input(type="submit", name='clientTable', value="Submit")
+
+

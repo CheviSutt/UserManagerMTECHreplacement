@@ -21,13 +21,13 @@ app.post('/clientTable', (req, res) => {
     fs.readFile(jsonFile, 'utf8', (err, data) => {
     if (err) console.log(err);
 
-    // let index = 0; // unique id
-    // let prevData = JSON.parse(data); // unique id
+    let index = 0; // unique id
+    //let prevData = JSON.parse(data); // unique id
 
     let jsonData = JSON.parse(data);
     let clientObj = {
-        // userid: 0, // unique id
-        userId: req.body.userId,
+         userId: 0, // unique id
+        //userId: req.body.userId,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -35,21 +35,20 @@ app.post('/clientTable', (req, res) => {
         age: req.body.age
     }
 
-        // prevData.clients.forEach(userid => { // unique id block
-        //     if (userid.id === index) index++;
-        //     jsonArray.clients.push(userid);
-        // });
-        //
-        // clientObj.id = index; // unique id block
-        // jsonArray.clients.push(clientObj); // unique id
+    jsonData.clients.forEach(user => { // unique id block
+        if (user.userId === index) index++;
+    });
 
-        jsonData.clients.push(clientObj);
-        res.render('clientTable', {clients: jsonData.clients});
+    clientObj.userId = index; // unique id block
 
-        fs.writeFile(jsonFile, JSON.stringify(jsonData), 'utf8', err => console.log(err));
+    jsonData.clients.push(clientObj);
+    res.render('clientTable', {clients: jsonData.clients});
+
+    fs.writeFile(jsonFile, JSON.stringify(jsonData), 'utf8', err => console.log(err));
         //res.sendFile(jsonFile); // unique id attept
     });
     // res.sendFile(jsonFile); // unique id attept
+
 });
 
 app.get('/edit', (req, res) => { // Routes to edit page
@@ -63,12 +62,88 @@ app.get('/edit', (req, res) => { // Routes to edit page
     });
 });
 
+app.post('/editSubmit', (req, res) => { // test
+    //console.log(req);
+    let users = [];
+    console.log(req.body);
+    let loop = req.body.userId.length;
+    for(let i = 0; i <= loop; i++){
+        let user = {
+            userId: req.body.userId[i],
+            firstName: req.body.firstName[i],
+            lastName: req.body.lastName[i],
+            email: req.body.email[i],
+            age: req.body.age[i]
+        };
+
+        users.push(user);
+
+    }
+    let jsonData = {
+        clients: users
+    };
+    console.log(users);
+    fs.writeFile(jsonFile, JSON.stringify(jsonData), (err) => {
+        if (err) throw err;
+        fs.readFile(jsonFile, 'utf8', (err, data) => {
+            if (err) throw err;
+
+            let allUsers = JSON.parse(data);
+
+            res.render('clientTable', {clients: allUsers.clients});
+        });
+
+    });
+});
+
+// app.post('/remove', (req, res) => { // test
+//
+//     let index = Number(req.body.delete);
+//     console.log('index' + index );
+//
+//     fs.readFile(Users, 'utf8', (err, data) => {
+//         if (err) throw err;
+//
+//         let allUsers = JSON.parse(data);
+//         //console.log(allUsers);
+//         for(let i = 0; i <= allUsers.users.length; i++){
+//             if(i === index){
+//                 console.log('i' + i);
+//                 allUsers.users.splice(index);
+//             }
+//         }
+//         fs.writeFile(Users, JSON.stringify(allUsers));
+//         console.log(allUsers.users);
+//         res.render('users', {users: allUsers.users});
+//     });
+// });
+
+app.post('/delete', (req,res) => {
+    let index = Number(req.body.delete);
+    console.log('index' + index);
+
+    fs.readFile(jsonFile, 'utf8', (err, data) => {
+        if(err) throw err;
+
+        let allUsers =JSON.parse(data);
+        for(let i = 0; i <= allUsers.clients.length; i++) {
+            console.log(i);
+
+            if (i === index) {
+                console.log('i'+ i);
+                allUsers.clients.splice(index);
+            }
+        }
+        fs.writeFile(jsonFile, JSON.stringify(allUsers));
+        console.log(allUsers.clients);
+        res.render('clientTable', {clients: allUsers.clients});
+    });
+});
 
 app.listen(8080, () => {
     console.log('Listening on port 8080');
 });
 
 // function play() {
-//     return 123;
+// console.log('Deleted');
 // }
-// console.log(play);
