@@ -6,10 +6,6 @@ const jsonFile = __dirname + '/clients.json';
 
 const app = express();
 
-// let jsonArray = {
-//     clients: []
-// };
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
@@ -22,11 +18,10 @@ app.post('/clientTable', (req, res) => {
     if (err) console.log(err);
 
     let index = 0; // unique id
-    //let prevData = JSON.parse(data); // unique id
 
     let jsonData = JSON.parse(data);
     let clientObj = {
-         userId: 0, // unique id
+        userId: 0, // unique id
         //userId: req.body.userId,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -38,17 +33,13 @@ app.post('/clientTable', (req, res) => {
     jsonData.clients.forEach(user => { // unique id block
         if (user.userId === index) index++;
     });
-
-    clientObj.userId = index; // unique id block
+    clientObj.userId = index; // unique id
 
     jsonData.clients.push(clientObj);
     res.render('clientTable', {clients: jsonData.clients});
 
     fs.writeFile(jsonFile, JSON.stringify(jsonData), 'utf8', err => console.log(err));
-        //res.sendFile(jsonFile); // unique id attept
     });
-    // res.sendFile(jsonFile); // unique id attept
-
 });
 
 app.get('/edit', (req, res) => { // Routes to edit page
@@ -58,11 +49,10 @@ app.get('/edit', (req, res) => { // Routes to edit page
         let jsonData = JSON.parse(data);
 
         res.render('edit', {clients: jsonData.clients});
-        // fs.writeFile(jsonFile, JSON.stringify(jsonData), 'utf8', err => console.log(err));
     });
 });
 
-app.post('/editSubmit', (req, res) => { // test
+app.post('/editSubmit', (req, res) => {
     //console.log(req);
     let users = [];
     console.log(req.body);
@@ -96,28 +86,6 @@ app.post('/editSubmit', (req, res) => { // test
     });
 });
 
-// app.post('/remove', (req, res) => { // test
-//
-//     let index = Number(req.body.delete);
-//     console.log('index' + index );
-//
-//     fs.readFile(Users, 'utf8', (err, data) => {
-//         if (err) throw err;
-//
-//         let allUsers = JSON.parse(data);
-//         //console.log(allUsers);
-//         for(let i = 0; i <= allUsers.users.length; i++){
-//             if(i === index){
-//                 console.log('i' + i);
-//                 allUsers.users.splice(index);
-//             }
-//         }
-//         fs.writeFile(Users, JSON.stringify(allUsers));
-//         console.log(allUsers.users);
-//         res.render('users', {users: allUsers.users});
-//     });
-// });
-
 app.post('/delete', (req,res) => {
     let index = Number(req.body.delete);
     console.log('index' + index);
@@ -145,5 +113,5 @@ app.listen(8080, () => {
 });
 
 // function play() {
-// console.log('Deleted');
+// console.log('Play Function');
 // }
