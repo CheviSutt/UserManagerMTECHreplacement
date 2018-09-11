@@ -96,20 +96,15 @@ app.post('/delete', (req, res) => {
 
         let allUsers = JSON.parse(data);
         for(let i = 0; i <= allUsers.clients.length; i++) {
-            console.log(i);
-
-            // if (allUsers.clients.userId === this.clients.userId) {
-            //     console.log(this.clients.userId);
-            // }
+          //  console.log(i);
 
             if (i === index) {
-                console.log('i'+ i);
-                console.log('allUsers.userId' + i);
+             //   console.log('i'+ i);
                 allUsers.clients.splice(index, 1);
             }
         }
         fs.writeFile(jsonFile, JSON.stringify(allUsers)); // delete
-        console.log(allUsers.clients); // delete
+       // console.log(allUsers.clients); // delete
         res.render('clientTable', {clients: allUsers.clients});
     });
 });
