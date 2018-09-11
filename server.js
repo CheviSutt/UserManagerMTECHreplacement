@@ -14,12 +14,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.post('/clientTable', (req, res) => {
-    fs.readFile(jsonFile, 'utf8', (err, data) => {
+    fs.readFile(jsonFile, 'utf8', (err, data) => { // reads clients,json
     if (err) console.log(err);
 
     let index = 0; // unique id
 
     let jsonData = JSON.parse(data);
+
     let clientObj = {
         userId: 0, // unique id
         //userId: req.body.userId,
@@ -36,7 +37,7 @@ app.post('/clientTable', (req, res) => {
     clientObj.userId = index; // unique id
 
     jsonData.clients.push(clientObj);
-    res.render('clientTable', {clients: jsonData.clients});
+    res.render('clientTable', {clients: jsonData.clients}); // rendering clientTable html
 
     fs.writeFile(jsonFile, JSON.stringify(jsonData), 'utf8', err => console.log(err));
     });
@@ -86,24 +87,29 @@ app.post('/editSubmit', (req, res) => {
     });
 });
 
-app.post('/delete', (req,res) => {
+app.post('/delete', (req, res) => {
     let index = Number(req.body.delete);
-    console.log('index' + index);
+   // console.log('index' + index);
 
     fs.readFile(jsonFile, 'utf8', (err, data) => {
         if(err) throw err;
 
-        let allUsers =JSON.parse(data);
+        let allUsers = JSON.parse(data);
         for(let i = 0; i <= allUsers.clients.length; i++) {
             console.log(i);
 
+            // if (allUsers.clients.userId === this.clients.userId) {
+            //     console.log(this.clients.userId);
+            // }
+
             if (i === index) {
                 console.log('i'+ i);
-                allUsers.clients.splice(index);
+                console.log('allUsers.userId' + i);
+                allUsers.clients.splice(index, 1);
             }
         }
-        fs.writeFile(jsonFile, JSON.stringify(allUsers));
-        console.log(allUsers.clients);
+        fs.writeFile(jsonFile, JSON.stringify(allUsers)); // delete
+        console.log(allUsers.clients); // delete
         res.render('clientTable', {clients: allUsers.clients});
     });
 });
