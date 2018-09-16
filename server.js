@@ -13,6 +13,14 @@ app.use('/', express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.get('/clientTable', (req, res) => {
+    fs.readFile(jsonFile, 'utf8', (err, data) => {
+        if (err) console.log(err);
+        let jsonData = JSON.parse(data);
+        res.render('clientTable', {clients: jsonData.clients});
+    });
+});
+
 app.post('/clientTable', (req, res) => {
     fs.readFile(jsonFile, 'utf8', (err, data) => { // reads clients,json
     if (err) console.log(err);
@@ -34,7 +42,7 @@ app.post('/clientTable', (req, res) => {
     jsonData.clients.forEach(user => { // unique id block
         if (user.userId === index) index++;
     });
-    clientObj.userId = index; // unique id
+    clientObj.userId = Number(index); // unique id
 
     jsonData.clients.push(clientObj);
     res.render('clientTable', {clients: jsonData.clients}); // rendering clientTable html
@@ -43,75 +51,81 @@ app.post('/clientTable', (req, res) => {
     });
 });
 
-app.get('/edit', (req, res) => { // Routes to edit page
+app.get('/edit/:clientId', (req, res) => { // Routes to edit page
+    let clientId = req.params.clientId;
+    let forEachCallBack = (index, jsonData) => {
+        console.log(jsonData.clients[index]);
+        res.render('edit', {client: jsonData.clients[index]}); // .userId to populate single user
+    }
     fs.readFile(jsonFile, 'utf8', (err, data) => {
         if (err) console.log(err);
 
         let jsonData = JSON.parse(data);
-        // jsonData.clients.forEach(user => {
-        //     if (user.userId === user.userId) {
-        //          console.log(user.userId);
-        //      }
-        // });
-        res.render('edit', {clients: jsonData.clients}); // .userId to populate single user
-    });
-});
 
-app.post('/editSubmit', (req, res) => {
-    //console.log(req);
-    let users = [];
-    console.log(req.body);
-    let loop = req.body.userId.length;
-    for(let i = 0; i <= loop; i++){
-        let user = {
-            userId: req.body.userId[i],
-            firstName: req.body.firstName[i],
-            lastName: req.body.lastName[i],
-            email: req.body.email[i],
-            age: req.body.age[i]
-        };
-
-        users.push(user);
-        }
-
-    let jsonData = {
-        clients: users
-    };
-    console.log(users);
-    fs.writeFile(jsonFile, JSON.stringify(jsonData), (err) => {
-        if (err) throw err;
-
-        fs.readFile(jsonFile, 'utf8', (err, data) => {
-            if (err) throw err;
-
-            let allUsers = JSON.parse(data);
-            res.render('clientTable', {clients: allUsers.clients});
-        });
-
-    });
-});
-
-app.post('/delete/:uid', (req, res) => {
-   // let clientId = req.params.uid;
-    let index = Number(req.body.delete); // this is getting the index within the delete form
-   //console.log('index' + index);
-    fs.readFile(jsonFile, 'utf8', (err, data) => {
-        if(err) throw err;
-
-        let allUsers = JSON.parse(data);
-        for(let i = 0; i <= allUsers.clients.length; i++) {
-          //  console.log(i);
-
-            if (i === index) {
-             //   console.log('i'+ i);
-                allUsers.clients.splice(index, 1);
+        jsonData.clients.forEach((user, index) => {
+            if (Number(user.userId) === Number(clientId)) {
+                forEachCallBack(index, jsonData);
             }
-        }
-        fs.writeFile(jsonFile, JSON.stringify(allUsers)); // delete
-       // console.log(allUsers.clients); // delete
-        res.render('clientTable', {clients: allUsers.clients});
+        });
     });
-    //res.redirect('/clientTable');
+});
+
+app.post('/edit/:clientId', (req, res) => {
+    //console.log(req);
+    let clientId = req.params.clientId;
+
+    let user = {
+        userId: req.body.userId,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        age: req.body.age
+    };
+
+    let forEachCallBack = (index, jsonData) => {
+        jsonData.clients[index] = user;
+        fs.writeFile(jsonFile, JSON.stringify(jsonData), (err) => {
+            if (err) throw err;
+        });
+        res.render('clientTable', {clients: jsonData.clients});
+    }
+
+    fs.readFile(jsonFile, 'utf8', (err, data) => {
+        if (err) console.log(err);
+
+        let jsonData = JSON.parse(data);
+
+        jsonData.clients.forEach((user, index) => {
+            if (Number(user.userId) === Number(clientId)) {
+                forEachCallBack(index, jsonData);
+            }
+        });
+    });
+});
+
+app.get('/delete/:clientId', (req, res) => {
+    let clientId = req.params.clientId;
+
+    let forEachCallBack = (index, jsonData) => {
+        jsonData.clients.splice(index,1);
+        console.log(jsonData);
+        res.redirect('/clientTable');
+        fs.writeFile(jsonFile, JSON.stringify(jsonData), (err) => {
+            if (err) throw err;
+        });
+    }
+
+    fs.readFile(jsonFile, 'utf8', (err, data) => {
+        if (err) console.log(err);
+
+        let jsonData = JSON.parse(data);
+
+        jsonData.clients.forEach((user, index) => {
+            if (Number(user.userId) === Number(clientId)) {
+                forEachCallBack(index, jsonData);
+            }
+        });
+    });
 });
 
 app.listen(5000, () => {

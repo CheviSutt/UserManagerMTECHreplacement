@@ -1,5 +1,3 @@
-mixin link(href, name)
-    a(href=href)&attributes(attributes)= name
 html
     body
         table
@@ -10,7 +8,7 @@ html
                 th Email
                 th Address
                 th Age
-            each client in clients
+            each client, index in clients
                 tr
                     td #{client.userId}
                     td #{client.firstName}
@@ -20,8 +18,7 @@ html
                     td #{client.age}
                         |
                         |
-                        +link('/edit', 'Edit')(class="btn")
+                        a(href=`/edit/${client.userId}`) Edit
                         |
                         |
-                        //button(onClick='play()') Delete
-                        //+link('/delete', 'Delete')(class="btn")
+                        a(href=`/delete/${client.userId}`) Delete

@@ -1,30 +1,28 @@
 html
     body
-        form(action="/editSubmit" method="post")
-            table
-                tr
+        table
+            tr
                 th User ID
                 th First Name
                 th Last Name
                 th Email
                 th Age
-                each client, index in clients
-                    tr
-                        td
-                            input(placeholder="UserID" type="text" name="userId" value=client.userId)
-                        td
-                            input(placeholder="First Name" type="text" name="firstName" value=client.firstName)
-                        td
-                            input(placeholder="Last Name" type="text" name="lastName" value=client.lastName)
-                        td
-                            input(placeholder="Email" type="text" name="email" value=client.email)
-                        td
-                            input(placeholder="Age" type="text" name="age" value=client.age)
-                        td
-                            form(action='/delete/' + client.userId   method='post')
-                                div
-                                    input(type='submit', name='delete', value=index)
+            tr
+                form(action=`/edit/${client.userId}` method="post")
+                    td
+                        input(placeholder="UserID" type="text" name="userId" value=client.userId)
+                    td
+                        input(placeholder="First Name" type="text" name="firstName" value=client.firstName)
+                    td
+                        input(placeholder="Last Name" type="text" name="lastName" value=client.lastName)
+                    td
+                        input(placeholder="Email" type="text" name="email" value=client.email)
+                    td
+                        input(placeholder="Age" type="text" name="age" value=client.age)
+                    td
+                        input(type="submit" value="Save")
+        a(href="/clientTable") Return
 
-            input(type="submit", name='clientTable', value="Submit")
+
 
 
