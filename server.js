@@ -29,7 +29,7 @@ app.post('/clientTable', (req, res) => {
         email: req.body.email,
         address: req.body.address,
         age: req.body.age
-    }
+    };
 
     jsonData.clients.forEach(user => { // unique id block
         if (user.userId === index) index++;
@@ -48,8 +48,12 @@ app.get('/edit', (req, res) => { // Routes to edit page
         if (err) console.log(err);
 
         let jsonData = JSON.parse(data);
-
-        res.render('edit', {clients: jsonData.clients});
+        // jsonData.clients.forEach(user => {
+        //     if (user.userId === user.userId) {
+        //          console.log(user.userId);
+        //      }
+        // });
+        res.render('edit', {clients: jsonData.clients}); // .userId to populate single user
     });
 });
 
@@ -68,29 +72,29 @@ app.post('/editSubmit', (req, res) => {
         };
 
         users.push(user);
+        }
 
-    }
     let jsonData = {
         clients: users
     };
     console.log(users);
     fs.writeFile(jsonFile, JSON.stringify(jsonData), (err) => {
         if (err) throw err;
+
         fs.readFile(jsonFile, 'utf8', (err, data) => {
             if (err) throw err;
 
             let allUsers = JSON.parse(data);
-
             res.render('clientTable', {clients: allUsers.clients});
         });
 
     });
 });
 
-app.post('/delete', (req, res) => {
-    let index = Number(req.body.delete);
-   // console.log('index' + index);
-
+app.post('/delete/:uid', (req, res) => {
+   // let clientId = req.params.uid;
+    let index = Number(req.body.delete); // this is getting the index within the delete form
+   //console.log('index' + index);
     fs.readFile(jsonFile, 'utf8', (err, data) => {
         if(err) throw err;
 
@@ -107,12 +111,11 @@ app.post('/delete', (req, res) => {
        // console.log(allUsers.clients); // delete
         res.render('clientTable', {clients: allUsers.clients});
     });
+    //res.redirect('/clientTable');
 });
 
-app.listen(3000, () => {
-    console.log('Listening on port 3000');
+app.listen(5000, () => {
+    console.log('Listening on port 5000');
 });
 
-// function play() {
-// console.log('Play Function');
-// }
+

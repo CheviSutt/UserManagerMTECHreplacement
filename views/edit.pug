@@ -21,7 +21,7 @@ html
                         td
                             input(placeholder="Age" type="text" name="age" value=client.age)
                         td
-                            form(action='/delete' method='post')
+                            form(action='/delete/' + client.userId   method='post')
                                 div
                                     input(type='submit', name='delete', value=index)
 
